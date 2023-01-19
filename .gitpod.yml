@@ -11,16 +11,19 @@ tasks:
   - name: Instalar dependencias
     init: gp sync-await bundle
     command: pip install -r requirements.txt && pip install -r sidecar-requirements.txt
-  - name: Crear imagen Docker AeroAlpes
-    init: docker build . -f aeroalpes.Dockerfile -t aeroalpes/flask
-  - name: Crear imagen Docker Adaptador
-    init: docker build . -f adaptador.Dockerfile -t aeroalpes/adaptador
+  - name: Crear imagenes Docker
+    init: > 
+      docker build . -f aeroalpes.Dockerfile -t aeroalpes/flask
+      && docker build . -f adaptador.Dockerfile -t aeroalpes/adaptador
+      gp sync-done images
   - name: Crear folder para datos y asigna permisos
-    init: mkdir data/bookkeeper && data/zookeeper && sudo chmod -R 777 ./data
+    init: > 
+      mkdir -p data/bookkeeper && 
+      mkdir -p data/zookeeper && 
+      sudo chmod -R 777 ./data
   - name: Pull el Docker compose
-    init: docker-compose pull
-  - name: Ejecutar el docker-compose y sus servicios
-    command: docker-compose up
+    init: gp sync-await images
+    command: docker-compose pull
   
 ports:
   - port: 2181
