@@ -5,6 +5,11 @@ from flask_swagger import swagger
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
+def registrar_handlers():
+    import aeroalpes.modulos.cliente.aplicacion
+    import aeroalpes.modulos.vuelos.aplicacion
+
 def importar_modelos_alchemy():
     import aeroalpes.modulos.cliente.infraestructura.dto
     import aeroalpes.modulos.hoteles.infraestructura.dto
@@ -29,6 +34,7 @@ def create_app(configuracion=None):
     from aeroalpes.config.db import db
 
     importar_modelos_alchemy()
+    registrar_handlers()
 
     with app.app_context():
         db.create_all()

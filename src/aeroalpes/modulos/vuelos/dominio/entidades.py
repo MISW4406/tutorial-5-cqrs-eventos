@@ -36,7 +36,7 @@ class Pasajero(Entidad):
 @dataclass
 class Reserva(AgregacionRaiz):
     id_cliente: uuid.UUID = field(hash=True, default=None)
-    estado: ov.EstadoReserva = field(default=None)
+    estado: ov.EstadoReserva = field(default=ov.EstadoReserva.PENDIENTE)
     itinerarios: list[ov.Itinerario] = field(default_factory=list[ov.Itinerario])
 
     def crear_reserva(self, reserva: Reserva):
@@ -44,7 +44,7 @@ class Reserva(AgregacionRaiz):
         self.estado = reserva.estado
         self.itinerarios = reserva.itinerarios
 
-        self.agregar_evento(ReservaCreada(self.id, self.id_cliente, str(self.estado), self.fecha_creacion))
+        self.agregar_evento(ReservaCreada(id_reserva=self.id, id_cliente=self.id_cliente, estado=self.estado.name, fecha_creacion=self.fecha_creacion))
 
     def aprobar_reserva(self):
         self.estado = ov.EstadoReserva.APROBADA
