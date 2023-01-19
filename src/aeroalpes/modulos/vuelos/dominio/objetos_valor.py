@@ -125,6 +125,7 @@ class ParametroBusca(ObjetoValor):
 
 
 class EstadoReserva(Enum):
-    ACTIVA = "Activa"
+    APROBADA = "Aprobada"
     PENDIENTE = "Pendiente"
     CANCELADA = "Cancelada"
+    PAGADA = "Pagada"

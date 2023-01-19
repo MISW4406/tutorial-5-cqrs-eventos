@@ -8,6 +8,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 import aeroalpes.modulos.vuelos.dominio.objetos_valor as ov
+from aeroalpes.modulos.vuelos.dominio.eventos import ReservaCreada, ReservaAprobada, ReservaCancelada, ReservaPagada
 from aeroalpes.seedwork.dominio.entidades import Locacion, AgregacionRaiz, Entidad
 
 @dataclass
@@ -32,9 +33,30 @@ class Pasajero(Entidad):
     clase: ov.Clase = field(default_factory=ov.Clase)
     tipo: ov.TipoPasajero = field(default_factory=ov.TipoPasajero)
 
-
 @dataclass
 class Reserva(AgregacionRaiz):
-    id_cliente: uuid.UUID = field(hash=True)
-    estado: ov.EstadoReserva = field(default_factory=ov.EstadoReserva)
+    id_cliente: uuid.UUID = field(hash=True, default=None)
+    estado: ov.EstadoReserva = field(default=None)
     itinerarios: list[ov.Itinerario] = field(default_factory=list[ov.Itinerario])
+
+    def crear_reserva(self, reserva: Reserva):
+        self.id_cliente = reserva.id_cliente
+        self.estado = reserva.estado
+        self.itinerarios = reserva.itinerarios
+
+        self.agregar_evento(ReservaCreada(self.id, self.id_cliente, str(self.estado), self.fecha_creacion))
+
+    def aprobar_reserva(self):
+        self.estado = ov.EstadoReserva.APROBADA
+
+        self.agregar_evento(ReservaAprobada(self.id, self.fecha_actualizacion))
+
+    def cancelar_reserva(self):
+        self.estado = ov.EstadoReserva.CANCELADA
+
+        self.agregar_evento(ReservaCancelada(self.id, self.fecha_actualizacion))
+    
+    def pagar_reserva(self):
+        self.estado = ov.EstadoReserva.PAGADA
+
+        self.agregar_evento(ReservaPagada(self.id, self.fecha_actualizacion))

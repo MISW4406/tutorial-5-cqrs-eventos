@@ -5,6 +5,7 @@ En este archivo usted encontrará las entidades reusables parte del seedwork del
 """
 
 from dataclasses import dataclass, field
+from .eventos import EventoDominio
 from .mixins import ValidarReglasMixin
 from .reglas import IdEntidadEsInmutable
 from .excepciones import IdDebeSerInmutableExcepcion
@@ -35,7 +36,13 @@ class Entidad:
 
 @dataclass
 class AgregacionRaiz(Entidad, ValidarReglasMixin):
-    ...
+    eventos: list[EventoDominio] = field(default_factory=list)
+
+    def agregar_evento(self, evento: EventoDominio):
+        self.eventos.append(evento)
+    
+    def limpiar_eventos(self):
+        self.eventos = list()
 
 
 @dataclass

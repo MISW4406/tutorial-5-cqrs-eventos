@@ -4,6 +4,7 @@ from aeroalpes.modulos.vuelos.dominio.fabricas import FabricaVuelos
 from aeroalpes.modulos.vuelos.infraestructura.fabricas import FabricaRepositorio
 from aeroalpes.modulos.vuelos.infraestructura.repositorios import RepositorioReservas
 from .mapeadores import MapeadorReserva
+from aeroalpes.modulos.vuelos.aplicacion.handlers import Dispatcher
 
 from .dto import ReservaDTO
 
@@ -23,9 +24,14 @@ class ServicioReserva(Servicio):
 
     def crear_reserva(self, reserva_dto: ReservaDTO) -> ReservaDTO:
         reserva: Reserva = self.fabrica_vuelos.crear_objeto(reserva_dto, MapeadorReserva())
+        
+        reserva.crear_reserva(reserva)
 
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioReservas.__class__)
         repositorio.agregar(reserva)
+
+        for evento in reserva.eventos:
+            Dispatcher.publicar(evento)
 
         return self.fabrica_vuelos.crear_objeto(reserva, MapeadorReserva())
 
