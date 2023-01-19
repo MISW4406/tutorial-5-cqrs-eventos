@@ -2,6 +2,8 @@ version: '3'
 networks:
   pulsar:
     driver: bridge
+  sidecar:
+    driver: bridge
 services:
 # Start zookeeper
   zookeeper:
@@ -91,3 +93,26 @@ services:
       - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf
       &&  exec bin/pulsar broker"
+  
+  # Servicios de AeroAlpes
+  aeroalpes:
+    container_name: aeroalpes
+    hostname: aeroalpes
+    image: aeroalpes/flask 
+    networks:
+      - sidecar
+      - pulsar
+    labels:
+      SidecarDiscover: "false"
+    ports:
+      - "5000:5000"
+  adaptador:
+    image: "aeroalpes/adaptador"
+    container_name: adaptador
+    hostname: adaptador
+    networks:
+      - sidecar
+    environment:
+      - AEROALPES_ADDRESS=aeroalpes
+    ports:
+      - "50051:50051"
