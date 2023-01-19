@@ -8,7 +8,7 @@ tasks:
       pyenv install 3.10.7 -f &&
       pyenv local 3.10.7 &&
       gp sync-done bundle
-  - name: Instalar dependencias
+  - name: Instalar dependenciasp
     init: gp sync-await bundle
     command: pip install -r requirements.txt && pip install -r sidecar-requirements.txt
   - name: Crear imagenes Docker
