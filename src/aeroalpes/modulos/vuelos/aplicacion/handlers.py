@@ -1,6 +1,6 @@
 from aeroalpes.modulos.vuelos.dominio.eventos import ReservaCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
 from aeroalpes.seedwork.aplicacion.handlers import Handler
-from aeroalpes.modulos.vuelos.infraestructura.despachadores import Despechador
+from aeroalpes.modulos.vuelos.infraestructura.despachadores import Despachador
 
 class HandlerReserva(Handler):
 
@@ -8,7 +8,7 @@ class HandlerReserva(Handler):
     def handle_reserva_creada(evento):
         print(evento)
 
-        despachador = Despechador()
+        despachador = Despachador()
         despachador.publicar(evento)        
 
         print('Reserva Creada en Reservas')
