@@ -124,7 +124,7 @@ class ParametroBusca(ObjetoValor):
     pasajeros: list[Pasajero] = field(default_factory=list)
 
 
-class EstadoReserva(Enum):
+class EstadoReserva(str, Enum):
     APROBADA = "Aprobada"
     PENDIENTE = "Pendiente"
     CANCELADA = "Cancelada"

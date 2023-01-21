@@ -30,7 +30,8 @@ def reservar():
 def dar_reserva(id=None):
     if id:
         sr = ServicioReserva()
+        map_reserva = MapeadorReservaDTOJson()
         
-        return sr.obtener_reserva_por_id(id)
+        return map_reserva.dto_a_externo(sr.obtener_reserva_por_id(id))
     else:
         return [{'message': 'GET!'}]

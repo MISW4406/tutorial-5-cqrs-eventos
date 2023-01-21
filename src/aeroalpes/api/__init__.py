@@ -1,10 +1,11 @@
 import os
-from flask import Flask, render_template, request, url_for, redirect, jsonify
+import asyncio
+
+from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
-
 
 def registrar_handlers():
     import aeroalpes.modulos.cliente.aplicacion
@@ -22,10 +23,16 @@ def create_app(configuracion=None):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
 
+    # Asyncio
+    loop = asyncio.get_event_loop()
+
     # Configuracion de BD
     app.config['SQLALCHEMY_DATABASE_URI'] =\
             'sqlite:///' + os.path.join(basedir, 'database.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
+    app.config['SESSION_TYPE'] = 'filesystem'
 
      # Inicializa la DB
     from aeroalpes.config.db import init_db
@@ -65,5 +72,6 @@ def create_app(configuracion=None):
     @app.route("/health")
     def health():
         return {"status": "up"}
+
 
     return app

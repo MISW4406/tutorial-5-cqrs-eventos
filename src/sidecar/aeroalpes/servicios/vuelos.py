@@ -5,6 +5,7 @@ import os
 
 from aeroalpes.pb2py.vuelos_pb2 import Reserva, RespuestaReserva
 from aeroalpes.pb2py.vuelos_pb2_grpc import VuelosServicer
+from aeroalpes.utils import dict_a_proto_itinerarios
 
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.timestamp_pb2 import Timestamp
@@ -31,8 +32,17 @@ class Vuelos(VuelosServicer):
             fecha_actualizacion = Timestamp()
             fecha_actualizacion.FromDatetime(fecha_actualizacion_dt)
 
+            # Transformamos en 
+            itinerarios = respuesta.get('itinerarios', [])
+            legs = itinerarios[0]['odos'][0]['segmentos'][0]['legs']
+
+            for leg in legs:
+                leg['fecha_salida'] = datetime.datetime.strptime(leg['fecha_salida'], TIMESTAMP_FORMAT)
+                leg['fecha_llegada'] = datetime.datetime.now()
+
+
             reserva =  Reserva(id=respuesta.get('id'), 
-                itinerarios=respuesta.get('itinerarios',[]), 
+                itinerarios=dict_a_proto_itinerarios(itinerarios), 
                 fecha_actualizacion=fecha_actualizacion, 
                 fecha_creacion=fecha_creacion)
 
