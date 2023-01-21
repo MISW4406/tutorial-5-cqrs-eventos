@@ -27,7 +27,7 @@ class UnidadTrabajo(ABC):
         self.rollback()
 
     def _obtener_eventos(self, batches=None):
-        batches = [] if batches is None else self.batches
+        batches = self.batches if batches is None else []
         for batch in batches:
             for arg in batch.args:
                 if isinstance(arg, AgregacionRaiz):

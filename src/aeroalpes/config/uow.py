@@ -32,7 +32,6 @@ class UnidadTrabajoSQLAlchemy(UnidadTrabajo):
 
         super().commit()
 
-
     def rollback(self, savepoint=None):
         if savepoint:
             savepoint.rollback()
