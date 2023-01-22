@@ -5,34 +5,28 @@ import time
 
 from aeroalpes.modulos.vuelos.infraestructura.schema.v1.eventos import EventoReservaCreada
 from aeroalpes.modulos.vuelos.infraestructura.schema.v1.comandos import ComandoCrearReserva
-
+from aeroalpes.seedwork.infraestructura import utils
 
 def suscribirse_a_eventos():
-    client = pulsar.Client('pulsar://localhost:6650')
-    consumer = client.subscribe('eventos-reserva', subscription_name='aeroalpes-sub', schema=AvroSchema(EventoReservaCreada))
+    cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+    consumidor = cliente.subscribe('eventos-reserva', subscription_name='aeroalpes-sub-eventos', schema=AvroSchema(EventoReservaCreada))
 
     while True:
-        msg = consumer.receive()
-        print("Received message: '%s'" % msg.data())
-        print("Received value: '%s'" % msg.value())
-        print("Received value: '%s'" % msg.value().data)
+        mensaje = consumidor.receive()
+        print(f'Evento recibido: {mensaje.value().data}')
 
-        consumer.acknowledge(msg)
-        
+        consumidor.acknowledge(mensaje)     
 
-    client.close()
+    cliente.close()
 
 def suscribirse_a_comandos():
-    client = pulsar.Client('pulsar://localhost:6650')
-    consumer = client.subscribe('comandos-reserva', subscription_name='aeroalpes-sub', schema=AvroSchema(ComandoCrearReserva))
+    cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+    consumidor = cliente.subscribe('comandos-reserva', subscription_name='aeroalpes-sub-comandos', schema=AvroSchema(ComandoCrearReserva))
 
     while True:
-        msg = consumer.receive()
-        print("Received message: '%s'" % msg.data())
-        print("Received value: '%s'" % msg.value())
-        print("Received value: '%s'" % msg.value().data)
+        mensaje = consumidor.receive()
+        print(f'Comando recibido: {mensaje.value().data}')
 
-        consumer.acknowledge(msg)
+        consumidor.acknowledge(mensaje)     
         
-
-    client.close()
+    cliente.close()

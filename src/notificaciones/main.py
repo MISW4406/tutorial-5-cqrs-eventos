@@ -30,9 +30,10 @@ consumer = client.subscribe('eventos-reserva', subscription_name='my-sub2', sche
 while True:
     msg = consumer.receive()
     print('=========================================')
-    print("Received message: '%s'" % msg.data())
-    print("Received value: '%s'" % msg.value())
-    print("Received value: '%s'" % msg.value().data)
+    print("Mensaje Recibido: '%s'" % msg.value().data)
+    print('=========================================')
+
+    print('==== Envía correo a usuario ====')
 
     consumer.acknowledge(msg)
 

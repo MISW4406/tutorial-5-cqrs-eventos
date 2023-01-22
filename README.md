@@ -178,6 +178,7 @@ docker-compose --profile pulsar up
 
 python src/ui/main.py
 
+fuser -k 8080/tcp
 
 
 Live Server librería a usar
