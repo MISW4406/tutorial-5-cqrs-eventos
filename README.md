@@ -19,7 +19,8 @@ Este repositorio sigue en general la misma estructura del repositorio de origen.
 - **requirements.txt**: Archivo con los requerimientos para el correcto funcionamiento del proyecto (librerias Python)
 
 
-## Ejecutar Aplicación
+## AeroAlpes
+### Ejecutar Aplicación
 
 Desde el directorio principal ejecute el siguiente comando.
 
@@ -33,15 +34,150 @@ Siempre puede ejecutarlo en modo DEBUG:
 flask --app src/aeroalpes/api --debug run
 ```
 
-## Ejecutar pruebas
+### Ejecutar pruebas
 
 ```bash
 coverage run -m pytest
 ```
 
-# Ver reporte de covertura
+### Ver reporte de covertura
 ```bash
 coverage report
 ```
 
+### Crear imagen Docker
+
+Desde el directorio principal ejecute el siguiente comando.
+
+```bash
+docker build . -f aeroalpes.Dockerfile -t aeroalpes/flask
+```
+
+### Ejecutar contenedora (sin compose)
+
+Desde el directorio principal ejecute el siguiente comando.
+
+```bash
+docker run -p 5000:5000 aeroalpes/flask
+```
+
+## Sidecar/Adaptador
+
+### Instalar librerías
+
+En el mundo real es probable que ambos proyectos estén en repositorios separados, pero por motivos pedagógicos y de simpleza, 
+estamos dejando ambos proyectos en un mismo repositorio. Sin embargo, usted puede encontrar un archivo `sidecar-requirements.txt`, 
+el cual puede usar para instalar las dependencias de Python para el servidor y cliente gRPC.
+
+```bash
+pip install -r sidecar-requirements.txt
+```
+
+### Ejecutar Servidor
+
+Desde el directorio principal ejecute el siguiente comando.
+
+```bash
+python src/sidecar/main.py 
+```
+
+### Ejecutar Cliente
+
+Desde el directorio principal ejecute el siguiente comando.
+
+```bash
+python src/sidecar/cliente.py 
+```
+
+### Compilación gRPC
+
+Desde el directorio `src/sidecar` ejecute el siguiente comando.
+
+```bash
+python -m grpc_tools.protoc -Iprotos --python_out=./pb2py --pyi_out=./pb2py --grpc_python_out=./pb2py protos/vuelos.proto
+```
+
+### Crear imagen Docker
+
+Desde el directorio principal ejecute el siguiente comando.
+
+```bash
+docker build . -f adaptador.Dockerfile -t aeroalpes/adaptador
+```
+
+### Ejecutar contenedora (sin compose)
+
+Desde el directorio principal ejecute el siguiente comando.
+
+```bash
+docker run -p 50051:50051 aeroalpes/adaptador
+```
+
+## Docker-compose
+
+Para desplegar toda la arquitectura en un solo comando, usamos `docker-compose`. Para ello, desde el directorio principal, ejecute el siguiente comando:
+
+```bash
+docker-compose up
+```
+
+Si desea detener el ambiente ejecute:
+
+```bash
+docker-compose stop
+```
+
+En caso de querer desplegar dicha topología en el background puede usar el parametro `-d`.
+
+```bash
+docker-compose up -d
+```
+
+## Comandos útiles
+
+### Listar contenedoras en ejecución
+```bash
+docker ps
+```
+
+### Listar todas las contenedoras
+```bash
+docker ps -a
+```
+
+### Parar contenedora
+```bash
+docker stop <id_contenedora>
+```
+
+### Eliminar contenedora
+```bash
+docker rm <id_contenedora>
+```
+
+### Listar imágenes
+```bash
+docker images
+```
+
+### Eliminar imágenes
+```bash
+docker images rm <id_imagen>
+```
+
+### Acceder a una contendora
+```bash
+docker exec -it <id_contenedora> sh
+```
+
+
+
+
 docker-compose --profile pulsar up
+
+
+python src/ui/main.py
+
+
+
+Live Server librería a usar
