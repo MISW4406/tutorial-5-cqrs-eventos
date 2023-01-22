@@ -19,6 +19,37 @@ def importar_modelos_alchemy():
     import aeroalpes.modulos.vehiculos.infraestructura.dto
     import aeroalpes.modulos.vuelos.infraestructura.dto
 
+def comenzar_consumidor():
+    """
+    Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
+    threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
+    de procesos y threads como Celery.
+    """
+
+    import threading
+    import aeroalpes.modulos.cliente.infraestructura.consumidores as cliente
+    import aeroalpes.modulos.hoteles.infraestructura.consumidores as hoteles
+    import aeroalpes.modulos.pagos.infraestructura.consumidores as pagos
+    import aeroalpes.modulos.precios_dinamicos.infraestructura.consumidores as precios_dinamicos
+    import aeroalpes.modulos.vehiculos.infraestructura.consumidores as vehiculos
+    import aeroalpes.modulos.vuelos.infraestructura.consumidores as vuelos
+
+    # Suscripción a eventos
+    threading.Thread(target=cliente.suscribirse_a_eventos).start()
+    threading.Thread(target=hoteles.suscribirse_a_eventos).start()
+    threading.Thread(target=pagos.suscribirse_a_eventos).start()
+    threading.Thread(target=precios_dinamicos.suscribirse_a_eventos).start()
+    threading.Thread(target=vehiculos.suscribirse_a_eventos).start()
+    threading.Thread(target=vuelos.suscribirse_a_eventos).start()
+
+    # Suscripción a comandos
+    threading.Thread(target=cliente.suscribirse_a_comandos).start()
+    threading.Thread(target=hoteles.suscribirse_a_comandos).start()
+    threading.Thread(target=pagos.suscribirse_a_comandos).start()
+    threading.Thread(target=precios_dinamicos.suscribirse_a_comandos).start()
+    threading.Thread(target=vehiculos.suscribirse_a_comandos).start()
+    threading.Thread(target=vuelos.suscribirse_a_comandos).start()
+
 def create_app(configuracion=None):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
@@ -42,6 +73,7 @@ def create_app(configuracion=None):
 
     with app.app_context():
         db.create_all()
+        comenzar_consumidor()
 
      # Importa Blueprints
     from . import cliente
@@ -69,38 +101,5 @@ def create_app(configuracion=None):
     @app.route("/health")
     def health():
         return {"status": "up"}
-
-    @app.before_first_request
-    def comenzar_consumidor():
-        """
-        Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
-        threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
-        de procesos y threads como Celery.
-        """
-
-        import threading
-        import aeroalpes.modulos.cliente.infraestructura.consumidores as cliente
-        import aeroalpes.modulos.hoteles.infraestructura.consumidores as hoteles
-        import aeroalpes.modulos.pagos.infraestructura.consumidores as pagos
-        import aeroalpes.modulos.precios_dinamicos.infraestructura.consumidores as precios_dinamicos
-        import aeroalpes.modulos.vehiculos.infraestructura.consumidores as vehiculos
-        import aeroalpes.modulos.vuelos.infraestructura.consumidores as vuelos
-
-        # Suscripción a eventos
-        threading.Thread(target=cliente.suscribirse_a_eventos).start()
-        threading.Thread(target=hoteles.suscribirse_a_eventos).start()
-        threading.Thread(target=pagos.suscribirse_a_eventos).start()
-        threading.Thread(target=precios_dinamicos.suscribirse_a_eventos).start()
-        threading.Thread(target=vehiculos.suscribirse_a_eventos).start()
-        threading.Thread(target=vuelos.suscribirse_a_eventos).start()
-
-        # Suscripción a comandos
-        threading.Thread(target=cliente.suscribirse_a_comandos).start()
-        threading.Thread(target=hoteles.suscribirse_a_comandos).start()
-        threading.Thread(target=pagos.suscribirse_a_comandos).start()
-        threading.Thread(target=precios_dinamicos.suscribirse_a_comandos).start()
-        threading.Thread(target=vehiculos.suscribirse_a_comandos).start()
-        threading.Thread(target=vuelos.suscribirse_a_comandos).start()
-
 
     return app
