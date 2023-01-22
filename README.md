@@ -115,26 +115,6 @@ Desde el directorio principal ejecute el siguiente comando.
 docker run -p 50051:50051 aeroalpes/adaptador
 ```
 
-## Docker-compose
-
-Para desplegar toda la arquitectura en un solo comando, usamos `docker-compose`. Para ello, desde el directorio principal, ejecute el siguiente comando:
-
-```bash
-docker-compose up
-```
-
-Si desea detener el ambiente ejecute:
-
-```bash
-docker-compose stop
-```
-
-En caso de querer desplegar dicha topología en el background puede usar el parametro `-d`.
-
-```bash
-docker-compose up -d
-```
-
 ## Microservicio Notificaciones
 ### Ejecutar Aplicación
 
@@ -183,6 +163,26 @@ Desde el directorio principal ejecute el siguiente comando.
 
 ```bash
 docker run aeroalpes/ui
+```
+
+## Docker-compose
+
+Para desplegar toda la arquitectura en un solo comando, usamos `docker-compose`. Para ello, desde el directorio principal, ejecute el siguiente comando:
+
+```bash
+docker-compose up
+```
+
+Si desea detener el ambiente ejecute:
+
+```bash
+docker-compose stop
+```
+
+En caso de querer desplegar dicha topología en el background puede usar el parametro `-d`.
+
+```bash
+docker-compose up -d
 ```
 
 ## Comandos útiles
