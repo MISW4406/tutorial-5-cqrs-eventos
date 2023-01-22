@@ -35,6 +35,6 @@ class Despachador:
         payload = ComandoCrearReservaPayload(
             id_usuario=str(comando.id_usuario)
             # agregar itinerarios
-            )
-
-        self._publicar_mensaje(evento_integracion, topico, AvroSchema(ComandoCrearReserva))
+        )
+        comando_integracion = ComandoCrearReserva(data=payload)
+        self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearReserva))
