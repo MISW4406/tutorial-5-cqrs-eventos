@@ -2,7 +2,7 @@ from aeroalpes.seedwork.aplicacion.queries import Query, QueryHandler, Resultado
 import uuid
 
 class ObtenerReservasNoPagadas(Query):
-    listing_id: uuid.UUID
+    ...
 
 class ObtenerReservasNoPagadasHandler(QueryHandler):
 

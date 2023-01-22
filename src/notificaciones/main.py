@@ -2,6 +2,7 @@ import pulsar
 from pulsar.schema import *
 import uuid
 import time
+import os
 
 def time_millis():
     return int(time.time() * 1000)
@@ -24,8 +25,10 @@ class ReservaCreadaPayload(Record):
 class EventoReservaCreada(EventoIntegracion):
     data = ReservaCreadaPayload()
 
-client = pulsar.Client('pulsar://localhost:6650')
-consumer = client.subscribe('eventos-reserva', subscription_name='my-sub2', schema=AvroSchema(EventoReservaCreada))
+HOSTNAME = os.getenv('PULSAR_ADDRESS', default="localhost")
+
+client = pulsar.Client(f'pulsar://{HOSTNAME}:6650')
+consumer = client.subscribe('eventos-reserva', subscription_name='sub-notificacion-eventos-reservas', schema=AvroSchema(EventoReservaCreada))
 
 while True:
     msg = consumer.receive()

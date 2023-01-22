@@ -108,7 +108,6 @@ def guardar_unidad_trabajo(uow: UnidadTrabajo):
         raise Exception('No hay unidad de trabajo')
 
 
-
 class UnidadTrabajoPuerto:
 
     @staticmethod
