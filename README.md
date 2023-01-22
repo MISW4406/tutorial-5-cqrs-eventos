@@ -1,23 +1,19 @@
-# Tutorial 4 - CQRS y manejo de eventos
+# Tutorial 5 - CQRS y manejo de eventos
 
 Repositorio con código base para el uso de un sistema usando el patrón CQRS y usando eventos de dominio e integración para la comunicación asíncrona entre componentes internos parte del mismo contexto acotado y sistemas externos.
 
-Este repositorio es un Fork del repositorio de [arquitectura hexagonal](https://github.com/MISW4406/tutorial-3-arquitectura-hexagonal) visto en el tutorial 3 del curso. Por tal motivo, puede usar ese mismo repositorio para entender algunos detalles que este README no cubre.
+Este repositorio está basado en el repositorio de sidecars visto en el tutorial 4 del curso. Por tal motivo, puede usar ese mismo repositorio para entender algunos detalles que este README no cubre.
 
 ## Estructura del proyecto
 
 Este repositorio sigue en general la misma estructura del repositorio de origen. Sin embargo, hay un par de adiciones importante mencionar:
 
-- El directorio **src** ahora cuenta con un nuevo directorio llamado **mensajeria**, el cual representa un servicio de mensajería que recibe eventos de dominio propagados del sistema de AeroAlpes, por medio de un broker de eventos.
-
-- **.github**: Directorio donde se localizan templates para Github y los CI/CD workflows 
-- **src**: En este directorio encuentra el código fuente para AeroAlpes. En la siguiente sección se explica un poco mejor la estructura del mismo ([link](https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure%3E) para más información)
-- **tests**: Directorio con todos los archivos de prueba, tanto unitarios como de integración. Sigue el estándar [recomendado por pytest](https://docs.pytest.org/en/7.1.x/explanation/goodpractices.html) y usado por [boto](https://github.com/boto/boto).
-- **.gitignore**: Archivo con la definición de archivos que se deben ignorar en el repositorio GIT
-- **.gitpod.yml**: Archivo que define las tareas/pasos a ejecutar para configurar su workspace en Gitpod
-- **README.md**: El archivo que está leyendo :)
-- **requirements.txt**: Archivo con los requerimientos para el correcto funcionamiento del proyecto (librerias Python)
-
+- El directorio **src** ahora cuenta con un nuevo directorio llamado **notificaciones**, el cual representa un servicio de mensajería que recibe eventos de integración propagados del sistema de AeroAlpes, por medio de un broker de eventos.
+- El directorio **src** ahora también cuenta cuenta con un nuevo directorio llamado **ui**, el cual representa nuestra interfaz gráfica la cual puede recibir por medio de un BFF desarrollado en Python usando websockets, las respuestas de nuestros comandos de forma asíncrona.
+- Nuestro proyecto de AeroAlpes ha cambiado de forma considerable. Los siguientes son los cambios relevantes en cada módulo:
+    - **api**: En este módulo se modificó el API de `vuelos.py` el cual cuenta con dos nuevos endpoints: `/reserva-commando` y `/reserva-query`, los cuales por detrás de escenas usan un patrón CQRS como la base de su comunicación.
+    - **modulos/vuelos/aplicacion**: Este módulo ahora considera los sub-módulos: `queries` y `comandos`. En dichos directorios pdrá ver como se desacopló las diferentes operaciones lectura y escritura. Vea los archivos `obtener_reserva.py` y `crear_reserva.py` para ver como se logra dicho desacoplamiento.
+    - 
 
 ## AeroAlpes
 ### Ejecutar Aplicación
@@ -175,8 +171,12 @@ docker exec -it <id_contenedora> sh
 
 docker-compose --profile pulsar up
 
-
+# Servidor BFF (UI)
 python src/ui/main.py
+
+
+# Servidor notificaciones
+python src/notificaciones/main.py
 
 fuser -k 8080/tcp
 

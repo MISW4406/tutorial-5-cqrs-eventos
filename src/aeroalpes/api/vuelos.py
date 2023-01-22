@@ -29,7 +29,7 @@ def reservar():
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
-@bp.route('/reserva-async', methods=('POST',))
+@bp.route('/reserva-comando', methods=('POST',))
 def reservar_asincrona():
     try:
         reserva_dict = request.json
