@@ -1,4 +1,4 @@
-import pulsar
+import pulsar, _pulsar
 from pulsar.schema import *
 import uuid
 import time
@@ -28,7 +28,7 @@ class EventoReservaCreada(EventoIntegracion):
 HOSTNAME = os.getenv('PULSAR_ADDRESS', default="localhost")
 
 client = pulsar.Client(f'pulsar://{HOSTNAME}:6650')
-consumer = client.subscribe('eventos-reserva', subscription_name='sub-notificacion-eventos-reservas', schema=AvroSchema(EventoReservaCreada))
+consumer = client.subscribe('eventos-reserva', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='sub-notificacion-eventos-reservas', schema=AvroSchema(EventoReservaCreada))
 
 while True:
     msg = consumer.receive()

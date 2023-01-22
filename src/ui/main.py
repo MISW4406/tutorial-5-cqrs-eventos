@@ -10,9 +10,12 @@ async def procesar_eventos(websocket):
     global consumidor
     print(f'====== Comienza a procesar =======')
     while True:
-        message = json.dumps(consumidor.receive().value())
-        print(f'Mensaje: {message}')
-        await websocket.send(message)
+        message = consumidor.receive()
+        json_dict = json.dumps(message.value())
+
+        print(f'Mensaje: {json_dict}')
+        
+        await websocket.send(json_dict)
         consumidor.acknowledge(message)
         await asyncio.sleep(1)
 

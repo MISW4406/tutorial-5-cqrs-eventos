@@ -1,4 +1,4 @@
-import pulsar
+import pulsar,_pulsar  
 from pulsar.schema import *
 import uuid
 import time
@@ -13,7 +13,7 @@ def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-reserva', subscription_name='aeroalpes-sub-eventos', schema=AvroSchema(EventoReservaCreada))
+        consumidor = cliente.subscribe('eventos-reserva', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='aeroalpes-sub-eventos', schema=AvroSchema(EventoReservaCreada))
 
         while True:
             mensaje = consumidor.receive()
@@ -32,7 +32,7 @@ def suscribirse_a_comandos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-reserva', subscription_name='aeroalpes-sub-comandos', schema=AvroSchema(ComandoCrearReserva))
+        consumidor = cliente.subscribe('comandos-reserva', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aeroalpes-sub-comandos', schema=AvroSchema(ComandoCrearReserva))
 
         while True:
             mensaje = consumidor.receive()
