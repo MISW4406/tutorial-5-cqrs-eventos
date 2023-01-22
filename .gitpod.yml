@@ -8,13 +8,13 @@ tasks:
       pyenv install 3.10.7 -f &&
       pyenv local 3.10.7 &&
       gp sync-done bundle
-  - name: Instalar dependenciasp
+  - name: Instalar dependencias
     init: gp sync-await bundle
     command: pip install -r requirements.txt && pip install -r sidecar-requirements.txt
   - name: Crear imagenes Docker
     init: > 
-      docker build . -f aeroalpes.Dockerfile -t aeroalpes/flask
-      && docker build . -f adaptador.Dockerfile -t aeroalpes/adaptador
+      docker build . -f aeroalpes.Dockerfile -t aeroalpes/flask &&
+      docker build . -f adaptador.Dockerfile -t aeroalpes/adaptador &&
       gp sync-done images
   - name: Crear folder para datos y asigna permisos
     init: > 
