@@ -15,7 +15,7 @@ def unix_time_millis(dt):
 class Despachador:
     def _publicar_mensaje(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer('eventos-reserva', schema=AvroSchema(EventoReservaCreada))
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoReservaCreada))
         publicador.send(mensaje)
         cliente.close()
 
