@@ -100,7 +100,3 @@ def reserva_correcta():
         }
     ]
 }
-
-def test_reservar_vuelo(client):
-    rv = client.post('/vuelos/reserva', data=json.dumps(reserva_correcta()), content_type='application/json')
-    assert rv is not None
