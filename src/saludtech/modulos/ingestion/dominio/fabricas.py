@@ -1,7 +1,5 @@
-
-from .entidades import Reserva
-from .reglas import MinimoUnItinerario, RutaValida
-from .excepciones import TipoObjetoNoExisteEnDominioVuelosExcepcion
+from .excepciones import TipoObjetoNoExisteEnDominioIngestionExcepcion
+from .entidades import ProcesoIngestion
 from saludtech.seedwork.dominio.repositorios import Mapeador, Repositorio
 from saludtech.seedwork.dominio.fabricas import Fabrica
 from saludtech.seedwork.dominio.entidades import Entidad
@@ -13,18 +11,15 @@ class _FabricaProcesoIngestion(Fabrica):
         if isinstance(obj, Entidad):
             return mapeador.entidad_a_dto(obj)
         else:
-            reserva: Reserva = mapeador.dto_a_entidad(obj)
+            proceso_ingestion: ProcesoIngestion = mapeador.dto_a_entidad(obj)
 
-            self.validar_regla(MinimoUnItinerario(reserva.itinerarios))
-            [self.validar_regla(RutaValida(ruta)) for itin in reserva.itinerarios for odo in itin.odos for segmento in odo.segmentos for ruta in segmento.legs]
-            
-            return reserva
+            return proceso_ingestion
 
 @dataclass
 class FabricaIngestion(Fabrica):
     def crear_objeto(self, obj: any, mapeador: Mapeador) -> any:
         if mapeador.obtener_tipo() == ProcesoIngestion.__class__:
-            fabrica_reserva = _FabricaReserva()
-            return fabrica_reserva.crear_objeto(obj, mapeador)
+            fabrica_ingestion = _FabricaProcesoIngestion()
+            return fabrica_ingestion.crear_objeto(obj, mapeador)
         else:
-            raise TipoObjetoNoExisteEnDominioVuelosExcepcion()
+            raise TipoObjetoNoExisteEnDominioIngestionExcepcion()

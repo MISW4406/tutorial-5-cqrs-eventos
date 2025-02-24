@@ -103,8 +103,7 @@ services:
       - pulsar
     labels:
       SidecarDiscover: "false"
-    depends_on:
-      - broker
+     
     environment:
       - SALUDTECH_ADDRESS=saludtech
       - PULSAR_ADDRESS=broker
@@ -113,7 +112,7 @@ services:
  
   db:
     image: postgres:15
-    profiles: ["saludtech"]
+    profiles: ["pulsar"]
     networks:
       - pulsar
       - api
@@ -128,38 +127,7 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Ejecuta el script al iniciar
 
-  # Servicios de Notificación
-  notificacion:
-    container_name: notificacion
-    hostname: notificacion
-    image: saludtech/notificacion 
-    profiles: ["saludtech", "notificacion"]
-    depends_on:
-      - saludtech
-      - broker
-    environment:
-      - SALUDTECH_ADDRESS=saludtech
-      - PULSAR_ADDRESS=broker
-    networks:
-      - pulsar
-  # Servicio UI
-  ui:
-    container_name: ui
-    hostname: ui
-    image: saludtech/ui 
-    profiles: ["saludtech", "ui"]
-    depends_on:
-      - saludtech
-      - broker
-    environment:
-      - SALUDTECH_ADDRESS=saludtech
-      - PULSAR_ADDRESS=broker
-    networks:
-      - pulsar
-    ports:
-      - "5678:5678"
 
 volumes:
   pg_data:

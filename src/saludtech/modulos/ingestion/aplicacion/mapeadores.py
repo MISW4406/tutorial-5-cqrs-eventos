@@ -1,6 +1,6 @@
 from saludtech.seedwork.aplicacion.dto import Mapeador as AppMap
 from saludtech.seedwork.dominio.repositorios import Mapeador as RepMap
-from .dto import ProcesoIngestionDTO
+from .dto import ProcesoIngestionDTO, ImagenDTO
 from saludtech.seedwork.dominio.repositorios import Mapeador
 from saludtech.modulos.ingestion.dominio.objetos_valor import Imagen, NombreRegion, Tipo
 from saludtech.modulos.ingestion.dominio.entidades import ProcesoIngestion, Region

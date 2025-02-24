@@ -11,7 +11,7 @@ def registrar_handlers():
     import saludtech.modulos.ingestion.aplicacion
 
 def importar_modelos_alchemy():
-    import aeroalpes.modulos.vuelos.infraestructura.dto 
+    import saludtech.modulos.partnership.infraestructura.dto 
     import saludtech.modulos.ingestion.infraestructura.dto
 
 def comenzar_consumidor():
@@ -22,27 +22,28 @@ def comenzar_consumidor():
     """
 
     import threading
-    import saludtech.modulos.cliente.infraestructura.consumidores as partnership
+    import saludtech.modulos.partnership.infraestructura.consumidores as partnership
     import saludtech.modulos.ingestion.infraestructura.consumidores as ingestion
 
     # Suscripción a eventos
-    threading.Thread(target=partnership.suscribirse_a_eventos).start()
+    #threading.Thread(target=partnership.suscribirse_a_eventos).start()
     threading.Thread(target=ingestion.suscribirse_a_eventos).start()
 
     # Suscripción a comandos
-    threading.Thread(target=partnership.suscribirse_a_comandos).start()
+    #threading.Thread(target=partnership.suscribirse_a_comandos).start()
     threading.Thread(target=ingestion.suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
     
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@db/saludtech"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5432/saludtech"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['TESTING'] = configuracion.get('TESTING')
+    
 
      # Inicializa la DB
     from saludtech.config.db import init_db
@@ -63,7 +64,7 @@ def create_app(configuracion={}):
     from . import ingestion
 
     # Registro de Blueprints
-    app.register_blueprint(cliente.bp)
+    app.register_blueprint(partnership.bp)
     app.register_blueprint(ingestion.bp)
 
     @app.route("/spec")

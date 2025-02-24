@@ -1,13 +1,12 @@
 from saludtech.config.db import db
 from saludtech.modulos.ingestion.dominio.repositorios import RepositorioProcesoIngestion
-from aeroalpes.modulos.vuelos.dominio.objetos_valor import NombreAero, Odo, Leg, Segmento, Itinerario, CodigoIATA
 from saludtech.modulos.ingestion.dominio.entidades import ProcesoIngestion
 from saludtech.modulos.ingestion.dominio.fabricas import FabricaIngestion
 from .dto import ProcesoIngestion as ProcesoIngestionDto
 from .mapeadores import MapeadorProcesoIngestion
 from uuid import UUID
 
-class RepositorioProcesoIngestion(RepositorioProcesoIngestion):
+class RepositorioProcesoIngestionPg(RepositorioProcesoIngestion):
 
     def __init__(self):
         self._fabrica_ingestion: FabricaIngestion = FabricaIngestion()

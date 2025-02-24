@@ -1,6 +1,6 @@
 from saludtech.modulos.ingestion.dominio.eventos import ProcesoIngestionCreado
 from saludtech.seedwork.aplicacion.handlers import Handler
-from aeroalpes.modulos.vuelos.infraestructura.despachadores import Despachador
+from saludtech.modulos.ingestion.infraestructura.despachadores import Despachador
 
 class HandlerProcesoIngestionIntegracion(Handler):
 
