@@ -9,6 +9,7 @@ from saludtech.modulos.ingestion.infraestructura.schema.v1.eventos import Evento
 from saludtech.modulos.ingestion.infraestructura.schema.v1.comandos import ComandoCrearProcesoIngestion
 from aeroalpes.seedwork.infraestructura import utils
 from saludtech.seedwork.aplicacion.comandos import ejecutar_commando
+from saludtech.modulos.ingestion.aplicacion.comandos.crear_proceso_ingestion import CrearProcesoIngestion
 def suscribirse_a_eventos():
     cliente = None
     try:
@@ -39,7 +40,9 @@ def suscribirse_a_comandos():
           
             print(mensaje.value().data.id_partner)
             print(f'Comando recibido: {mensaje.value().data}')
-            #ejecutar_commando(mensaje.value().data)
+            mc= mensaje.value().data
+            comando= CrearProcesoIngestion(fecha_creacion=mc.fecha_creacion,fecha_actualizacion=mc.fecha_actualizacion,id=mc.id_proceso_ingestion,id_partner=mc.id_partner,imagenes=mc.imagenes)
+            ejecutar_commando(comando)
             
 
             consumidor.acknowledge(mensaje)     

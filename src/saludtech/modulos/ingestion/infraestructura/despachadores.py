@@ -45,8 +45,8 @@ class Despachador:
             imagenes= imagenes
             
         )
-        print(payload)
+       
         comando_integracion = ComandoCrearProcesoIngestion(data=payload)
         print(comando_integracion)
-        print("aaa")
+   
         self._publicar_mensaje(comando_integracion, topico,AvroSchema(ComandoCrearProcesoIngestion))

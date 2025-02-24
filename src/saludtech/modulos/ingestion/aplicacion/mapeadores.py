@@ -4,7 +4,7 @@ from .dto import ProcesoIngestionDTO, ImagenDTO
 from saludtech.seedwork.dominio.repositorios import Mapeador
 from saludtech.modulos.ingestion.dominio.objetos_valor import Imagen, NombreRegion, Tipo
 from saludtech.modulos.ingestion.dominio.entidades import ProcesoIngestion, Region
-
+from datetime import date
 
 
 class MapeadorProcesoIngestionDTOJson(AppMap):  
@@ -12,7 +12,8 @@ class MapeadorProcesoIngestionDTOJson(AppMap):
     def externo_a_dto(self, externo: dict) -> ProcesoIngestionDTO:
         proceso_ingestion_dto = ProcesoIngestionDTO()
         proceso_ingestion_dto.id_partner = externo.get('id_partner')
-        
+        proceso_ingestion_dto.id =externo.get('id')
+        proceso_ingestion_dto.fecha_creacion =str(date.today())
         imagenes: list[ImagenDTO] = list()
         for imagen in externo.get('imagenes', list()):
             imagen_dto: ImagenDTO = ImagenDTO(imagen.get('tipo'),imagen.get('archivo'))
