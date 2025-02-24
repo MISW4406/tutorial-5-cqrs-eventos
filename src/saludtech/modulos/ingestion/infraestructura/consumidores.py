@@ -36,6 +36,8 @@ def suscribirse_a_comandos():
 
         while True:
             mensaje = consumidor.receive()
+          
+            print(mensaje.value().data.id_partner)
             print(f'Comando recibido: {mensaje.value().data}')
             #ejecutar_commando(mensaje.value().data)
             

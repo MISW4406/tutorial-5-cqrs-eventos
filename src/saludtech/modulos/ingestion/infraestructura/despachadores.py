@@ -15,7 +15,8 @@ def unix_time_millis(dt):
 class Despachador:
     def _publicar_mensaje(self, mensaje, topico,schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=schema)
+        print(mensaje)
+        publicador = cliente.create_producer(topico, schema=AvroSchema(ComandoCrearProcesoIngestion))
         publicador.send(mensaje)
         print("comando_publicado")
         cliente.close()
@@ -40,9 +41,12 @@ class Despachador:
             id_partner=str(comando.id_partner),
             fecha_creacion= str(comando.fecha_creacion),
             fecha_actualizacion= str(comando.fecha_actualizacion),
-            id= str(comando.id),
+            id_proceso_ingestion= str(comando.id),
             imagenes= imagenes
             
         )
+        print(payload)
         comando_integracion = ComandoCrearProcesoIngestion(data=payload)
+        print(comando_integracion)
+        print("aaa")
         self._publicar_mensaje(comando_integracion, topico,AvroSchema(ComandoCrearProcesoIngestion))
