@@ -26,7 +26,7 @@ class Despachador:
         payload = ProcesoIngestionCreadoPayload(
             id_proceso_ingestion=str(evento.id_proceso_ingestion), 
             id_partner=str(evento.id_partner), 
-            fecha_creacion=int(unix_time_millis(evento.fecha_creacion))
+            fecha_creacion=str((evento.fecha_creacion))
         )
         print("evento_publicado")
         evento_integracion = EventoProcesoIngestionCreado(data=payload)
