@@ -2,7 +2,7 @@ from saludtech.seedwork.aplicacion.dto import Mapeador as AppMap
 from saludtech.seedwork.dominio.repositorios import Mapeador as RepMap
 from .dto import ProcesoIngestionDTO, ImagenDTO
 from saludtech.seedwork.dominio.repositorios import Mapeador
-from saludtech.modulos.ingestion.dominio.objetos_valor import Imagen, NombreRegion, Tipo
+from saludtech.modulos.ingestion.dominio.objetos_valor import Imagen, NombreRegion
 from saludtech.modulos.ingestion.dominio.entidades import ProcesoIngestion, Region
 from datetime import date
 
@@ -51,8 +51,7 @@ class MapeadorProcesoIngestion(RepMap):
 
         imagenes_dto: list[ImagenDTO] = dto.imagenes
         for imagen_dto in imagenes_dto:
-            tipo= Tipo(imagen_dto.tipo)
-            imagen=Imagen(tipo=tipo,archivo=imagen_dto.archivo)
+            imagen=Imagen(tipo=imagen_dto.tipo,archivo=imagen_dto.archivo)
             proceso_ingestion.imagenes.append(imagen)
         
         return proceso_ingestion

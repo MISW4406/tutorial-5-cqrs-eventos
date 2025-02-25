@@ -36,7 +36,7 @@ class Despachador:
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
         imagenes= list()
         for imagen in comando.imagenes:
-                imagenes.extend({"tipo": imagen.tipo, "archivo": imagen.archivo})
+                imagenes.append({"tipo": imagen.tipo, "archivo": imagen.archivo})
         payload = ComandoCrearProcesoIngestionPayload(
             id_partner=str(comando.id_partner),
             fecha_creacion= str(comando.fecha_creacion),

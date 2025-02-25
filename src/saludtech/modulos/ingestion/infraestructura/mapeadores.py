@@ -1,5 +1,5 @@
 from saludtech.seedwork.dominio.repositorios import Mapeador
-from saludtech.modulos.ingestion.dominio.objetos_valor import Imagen, NombreRegion, Tipo
+from saludtech.modulos.ingestion.dominio.objetos_valor import Imagen, NombreRegion
 from saludtech.modulos.ingestion.dominio.entidades import ProcesoIngestion, Region
 from .dto import ProcesoIngestion as ProcesoIngestionDTO
 from .dto import Imagen as ImagenDTO
@@ -22,7 +22,7 @@ class MapeadorProcesoIngestion(Mapeador):
             imagen_dto = ImagenDTO()
             imagen_dto.tipo = imagen.tipo
             imagen_dto.archivo = imagen.archivo
-            imagenes_dto.extend(imagen_dto)
+            imagenes_dto.append(imagen_dto)
 
         proceso_ingestion_dto.imagenes = imagenes_dto
 
@@ -34,8 +34,7 @@ class MapeadorProcesoIngestion(Mapeador):
 
         imagenes_dto: list[ImagenDTO] = dto.imagenes
         for imagen_dto in imagenes_dto:
-            tipo= Tipo(imagen_dto.tipo)
-            imagen=Imagen(tipo=tipo,archivo=imagen_dto.archivo)
+            imagen=Imagen(tipo=imagen_dto.tipo,archivo=imagen_dto.archivo)
             proceso_ingestion.imagenes.extend(imagen)
         
         return proceso_ingestion

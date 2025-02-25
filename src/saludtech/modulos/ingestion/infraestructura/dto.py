@@ -30,4 +30,4 @@ class ProcesoIngestion(db.Model):
     id = db.Column(db.String, primary_key=True)
     fecha_creacion = db.Column(db.DateTime, nullable=False)
     fecha_actualizacion = db.Column(db.DateTime, nullable=False)
-    imagenes = db.relationship('Itinerario', secondary=proceso_ingestion_imagen, backref='proceso_ingestion')
+    imagenes = db.relationship('Imagen', secondary=proceso_ingestion_imagen, backref='proceso_ingestion')
