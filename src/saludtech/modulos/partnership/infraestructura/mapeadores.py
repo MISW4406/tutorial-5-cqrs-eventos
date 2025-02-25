@@ -1,5 +1,5 @@
 from saludtech.seedwork.dominio.repositorios import Mapeador
-from saludtech.modulos.ingestion.dominio.entidades import ProcesoIngestionPartner
+from saludtech.modulos.partnership.dominio.entidades import ProcesoIngestionPartner
 from .dto import ProcesoIngestionPartner as ProcesoIngestionPartnerDTO
 
 

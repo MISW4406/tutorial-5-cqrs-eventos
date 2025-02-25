@@ -6,11 +6,13 @@ from saludtech.modulos.ingestion.aplicacion.mapeadores import MapeadorProcesoIng
 from saludtech.seedwork.aplicacion.comandos import ejecutar_commando
 from saludtech.modulos.ingestion.aplicacion.dto import ProcesoIngestionDTO
 from saludtech.seedwork.dominio.excepciones import ExcepcionDominio
-
-
+from multiprocessing import Process
+from saludtech.modulos.ingestion.infraestructura.despachadores import Despachador
 from saludtech.modulos.ingestion.aplicacion.comandos.crear_proceso_ingestion import CrearProcesoIngestion
 from saludtech.modulos.ingestion.aplicacion.queries.obtener_proceso_ingestion import ObtenerProcesoIngestion
 from saludtech.seedwork.aplicacion.queries import ejecutar_query
+import saludtech.modulos.ingestion.infraestructura.consumidores as ingestion
+import saludtech.modulos.partnership.infraestructura.consumidores as partnership
 #from saludtech.modulos.ingestion.infraestructura.despachadores import Despachador
 
 bp = api.crear_blueprint('ingestion', '/ingestion')
@@ -25,10 +27,14 @@ def proceso_ingestion_asincronica():
         proceso_ingestion_dto = map_proceso_ingestion.externo_a_dto(proceso_ingestion_dict)
 
         comando = CrearProcesoIngestion(proceso_ingestion_dto.fecha_creacion, proceso_ingestion_dto.fecha_actualizacion, proceso_ingestion_dto.id, proceso_ingestion_dto.imagenes,proceso_ingestion_dto.id_partner)
+        hp1=Process(target=ingestion.suscribirse_a_eventos,daemon=True).start()
+        hp2=Process(target=partnership.suscribirse_a_comandos,daemon=True).start()
+        hp3=Process(target=partnership.suscribirse_a_eventos,daemon=True).start()
+        hp4=Process(target=ingestion.suscribirse_a_comandos,daemon=True).start()
+
+        despachador = Despachador()
+        despachador.publicar_comando(comando,'comandos-proceso_ingestion')
         
-        #despachador = Despachador()
-        #despachador.publicar_comando(comando,'comandos-proceso_ingestion')
-        ejecutar_commando(comando)
         
         
         return Response('{}', status=202, mimetype='application/json')

@@ -44,7 +44,7 @@ def suscribirse_a_comandos():
             comando= CrearProcesoIngestion(fecha_creacion=mc.fecha_creacion,fecha_actualizacion=mc.fecha_actualizacion,id=mc.id_proceso_ingestion,id_partner=mc.id_partner,imagenes=mc.imagenes)
             ejecutar_commando(comando)
             
-
+            print("comando ejecutado")
             consumidor.acknowledge(mensaje)     
             
         cliente.close()

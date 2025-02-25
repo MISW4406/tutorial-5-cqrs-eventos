@@ -7,7 +7,7 @@ from saludtech.modulos.ingestion.dominio.entidades import ProcesoIngestion
 from saludtech.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from saludtech.modulos.ingestion.aplicacion.mapeadores import MapeadorProcesoIngestion
 from saludtech.modulos.ingestion.infraestructura.repositorios import RepositorioProcesoIngestion
-
+import traceback
 from saludtech.modulos.ingestion.infraestructura.despachadores import Despachador
 @dataclass
 class CrearProcesoIngestion(Comando):
@@ -32,10 +32,14 @@ class CrearProcesoIngestionHandler (CrearProcesoIngestionBaseHandler):
         proceso_ingestion.crear_proceso_ingestion(proceso_ingestion)
 
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioProcesoIngestion.__class__)
+        try:
 
-        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, proceso_ingestion)
-        UnidadTrabajoPuerto.savepoint()
-        UnidadTrabajoPuerto.commit()
+            UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, proceso_ingestion)
+            UnidadTrabajoPuerto.savepoint()
+            UnidadTrabajoPuerto.commit()
+        except Exception: 
+            print(traceback.format_exc())
+            UnidadTrabajoPuerto.rollback()
 
 
 @comando.register(CrearProcesoIngestion)

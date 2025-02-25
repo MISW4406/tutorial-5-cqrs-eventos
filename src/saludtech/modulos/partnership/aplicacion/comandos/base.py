@@ -13,4 +13,4 @@ class AgregarProcesoIngestionPartnerBaseHandler(ComandoHandler):
     
     @property
     def fabrica_partnership(self):
-        return self.fabrica_partnership   
+        return self._fabrica_partnership   
