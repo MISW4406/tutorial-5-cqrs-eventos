@@ -4,13 +4,18 @@ from flask import redirect, render_template, request, session, url_for
 from flask import Response
 from saludtech.modulos.ingestion.aplicacion.mapeadores import MapeadorProcesoIngestionDTOJson
 from saludtech.seedwork.aplicacion.comandos import ejecutar_commando
-from saludtech.seedwork.aplicacion.queries import ejecutar_query
+from saludtech.modulos.ingestion.aplicacion.dto import ProcesoIngestionDTO
 from saludtech.seedwork.dominio.excepciones import ExcepcionDominio
+
+
 from saludtech.modulos.ingestion.aplicacion.comandos.crear_proceso_ingestion import CrearProcesoIngestion
 from saludtech.modulos.ingestion.aplicacion.queries.obtener_proceso_ingestion import ObtenerProcesoIngestion
-from saludtech.modulos.ingestion.infraestructura.despachadores import Despachador
-from saludtech.seedwork.dominio.excepciones import ExcepcionDominio
+from saludtech.seedwork.aplicacion.queries import ejecutar_query
+#from saludtech.modulos.ingestion.infraestructura.despachadores import Despachador
+
 bp = api.crear_blueprint('ingestion', '/ingestion')
+
+
 @bp.route('/ingestion-comando', methods=('POST',))
 def proceso_ingestion_asincronica():
     try:
@@ -23,8 +28,7 @@ def proceso_ingestion_asincronica():
         
         # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura
-        despachador = Despachador()
-        despachador.publicar_comando(comando,'comandos-proceso_ingestion')
+        ejecutar_commando(comando)
         
         
         return Response('{}', status=202, mimetype='application/json')

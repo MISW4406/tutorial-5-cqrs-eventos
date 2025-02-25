@@ -7,7 +7,7 @@ import traceback
 
 from saludtech.modulos.ingestion.infraestructura.schema.v1.eventos import EventoProcesoIngestionCreado
 from saludtech.modulos.ingestion.infraestructura.schema.v1.comandos import ComandoCrearProcesoIngestion
-from aeroalpes.seedwork.infraestructura import utils
+from saludtech.seedwork.infraestructura import utils
 from saludtech.seedwork.aplicacion.comandos import ejecutar_commando
 from saludtech.modulos.ingestion.aplicacion.comandos.crear_proceso_ingestion import CrearProcesoIngestion
 def suscribirse_a_eventos():

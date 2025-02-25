@@ -37,10 +37,11 @@ def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
     
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5432/saludtech"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config['SQLALCHEMY_DATABASE_URI'] =\
+            'sqlite:///' + os.path.join(basedir, 'database.db')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
+    app.secret_key = 'abc'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['TESTING'] = configuracion.get('TESTING')
     
@@ -48,9 +49,9 @@ def create_app(configuracion={}):
      # Inicializa la DB
     from saludtech.config.db import init_db
     init_db(app)
-
+    
     from saludtech.config.db import db
-
+    print(db.session)
     importar_modelos_alchemy()
     registrar_handlers()
 

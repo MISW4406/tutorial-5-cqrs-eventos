@@ -64,7 +64,7 @@ def create_app(configuracion={}):
      # Inicializa la DB
     from aeroalpes.config.db import init_db
     init_db(app)
-
+    
     from aeroalpes.config.db import db
 
     importar_modelos_alchemy()

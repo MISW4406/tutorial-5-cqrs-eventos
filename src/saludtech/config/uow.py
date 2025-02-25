@@ -41,4 +41,6 @@ class UnidadTrabajoSQLAlchemy(UnidadTrabajo):
         super().rollback()
     
     def savepoint(self):
+        print("aa")
+        print(db.session)
         db.session.begin_nested()

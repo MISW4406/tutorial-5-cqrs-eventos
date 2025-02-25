@@ -53,6 +53,6 @@ class MapeadorProcesoIngestion(RepMap):
         for imagen_dto in imagenes_dto:
             tipo= Tipo(imagen_dto.tipo)
             imagen=Imagen(tipo=tipo,archivo=imagen_dto.archivo)
-            proceso_ingestion.imagenes.extend(imagen)
+            proceso_ingestion.imagenes.append(imagen)
         
         return proceso_ingestion
