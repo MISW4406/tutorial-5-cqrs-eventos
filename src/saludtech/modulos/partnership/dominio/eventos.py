@@ -7,4 +7,4 @@ from datetime import datetime
 class ProcesoIngestionPartnerAgregado(EventoDominio):
     id_proceso_ingestion: uuid.UUID = None
     id_partner: uuid.UUID = None
-    fecha_creacion: datetime = None
+    fecha_creacion: str = None

@@ -13,5 +13,5 @@ class ProcesoIngestionPartner(db.Model):
     __tablename__ = "proceso_ingestion_partner"
     id_partner = db.Column(db.String, primary_key=True)
     id_proceso_ingestion=db.Column(db.String, primary_key=True)
-    fecha_creacion = db.Column(db.DateTime, nullable=False)
-    fecha_actualizacion = db.Column(db.DateTime, nullable=False)
+    fecha_creacion = db.Column(db.String, nullable=False)
+    fecha_actualizacion = db.Column(db.String, nullable=False)

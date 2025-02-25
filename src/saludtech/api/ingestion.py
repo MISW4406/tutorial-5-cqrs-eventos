@@ -26,8 +26,8 @@ def proceso_ingestion_asincronica():
 
         comando = CrearProcesoIngestion(proceso_ingestion_dto.fecha_creacion, proceso_ingestion_dto.fecha_actualizacion, proceso_ingestion_dto.id, proceso_ingestion_dto.imagenes,proceso_ingestion_dto.id_partner)
         
-        # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
-        # Revise la clase Despachador de la capa de infraestructura
+        #despachador = Despachador()
+        #despachador.publicar_comando(comando,'comandos-proceso_ingestion')
         ejecutar_commando(comando)
         
         

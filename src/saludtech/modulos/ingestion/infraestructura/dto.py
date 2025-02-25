@@ -28,6 +28,6 @@ class Imagen(db.Model):
 class ProcesoIngestion(db.Model):
     __tablename__ = "proceso_ingestion"
     id = db.Column(db.String, primary_key=True)
-    fecha_creacion = db.Column(db.DateTime, nullable=False)
-    fecha_actualizacion = db.Column(db.DateTime, nullable=False)
+    fecha_creacion = db.Column(db.String, nullable=False)
+    fecha_actualizacion = db.Column(db.String, nullable=False)
     imagenes = db.relationship('Imagen', secondary=proceso_ingestion_imagen, backref='proceso_ingestion')
