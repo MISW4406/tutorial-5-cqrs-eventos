@@ -1,0 +1,58 @@
+from saludtech.servicio_ingestion.seedwork.aplicacion.dto import Mapeador as AppMap
+from saludtech.servicio_ingestion.seedwork.dominio.repositorios import Mapeador as RepMap
+from .dto import ProcesoIngestionDTO, ImagenDTO
+from saludtech.servicio_ingestion.seedwork.dominio.repositorios import Mapeador
+from saludtech.servicio_ingestion.modulos.ingestion.dominio.objetos_valor import Imagen, NombreRegion
+from saludtech.servicio_ingestion.modulos.ingestion.dominio.entidades import ProcesoIngestion, Region
+from datetime import date
+
+
+class MapeadorProcesoIngestionDTOJson(AppMap):  
+
+    def externo_a_dto(self, externo: dict) -> ProcesoIngestionDTO:
+        proceso_ingestion_dto = ProcesoIngestionDTO()
+        proceso_ingestion_dto.id_partner = externo.get('id_partner')
+        proceso_ingestion_dto.id =externo.get('id')
+        proceso_ingestion_dto.fecha_creacion =str(date.today())
+        imagenes: list[ImagenDTO] = list()
+        for imagen in externo.get('imagenes', list()):
+            imagen_dto: ImagenDTO = ImagenDTO(imagen.get('tipo'),imagen.get('archivo'))
+            proceso_ingestion_dto.imagenes.append(imagen_dto)
+
+        return proceso_ingestion_dto
+    def dto_a_externo(self, dto: ProcesoIngestionDTO) -> dict:
+        return dto.__dict__
+class MapeadorProcesoIngestion(RepMap):
+    def obtener_tipo(self) -> type:
+        return ProcesoIngestion.__class__
+
+    def entidad_a_dto(self, entidad: ProcesoIngestion) -> ProcesoIngestionDTO:
+        
+        proceso_ingestion_dto = ProcesoIngestionDTO()
+        proceso_ingestion_dto.fecha_creacion = entidad.fecha_creacion
+        proceso_ingestion_dto.fecha_actualizacion = entidad.fecha_actualizacion
+        proceso_ingestion_dto.id = str(entidad.id)
+
+        imagenes_dto = list()
+        
+        for imagen in entidad.imagenes:
+            imagen_dto = ImagenDTO()
+            imagen_dto.tipo = imagen.tipo
+            imagen_dto.archivo = imagen.archivo
+            imagenes_dto.extend(imagen_dto)
+
+        proceso_ingestion_dto.imagenes = imagenes_dto
+
+        return proceso_ingestion_dto
+
+    def dto_a_entidad(self, dto: ProcesoIngestionDTO) -> ProcesoIngestion:
+        proceso_ingestion = ProcesoIngestion(dto.id, dto.fecha_creacion, dto.fecha_actualizacion)
+        proceso_ingestion.id_partner=dto.id_partner
+        proceso_ingestion.imagenes = list()
+
+        imagenes_dto: list[ImagenDTO] = dto.imagenes
+        for imagen_dto in imagenes_dto:
+            imagen=Imagen(tipo=imagen_dto.tipo,archivo=imagen_dto.archivo)
+            proceso_ingestion.imagenes.append(imagen)
+        
+        return proceso_ingestion

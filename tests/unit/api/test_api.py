@@ -4,9 +4,9 @@ import tempfile
 import pytest
 import json
 
-from saludtech.api import create_app, importar_modelos_alchemy
-from saludtech.config.db import init_db
-from saludtech.config.db import db
+from saludtech.servicio_ingestion.api import create_app, importar_modelos_alchemy
+from saludtech.servicio_ingestion.config.db import init_db
+from saludtech.servicio_ingestion.config.db import db
 
 @pytest.fixture
 def app():

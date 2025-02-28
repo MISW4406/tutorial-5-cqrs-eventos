@@ -93,10 +93,10 @@ services:
       &&  exec bin/pulsar broker"
   
   # Servicios de saludtech
-  saludtech:
-    container_name: saludtech
-    hostname: saludtech
-    image: saludtech/flask 
+  ingestion:
+    container_name: ingestion
+    hostname: ingestion
+    image: ingestion/flask 
     profiles: ["saludtech"]
     networks:
       - api
@@ -105,7 +105,7 @@ services:
       SidecarDiscover: "false"
      
     environment:
-      - SALUDTECH_ADDRESS=saludtech
+      - INGESTION_ADDRESS=ingestion
       - PULSAR_ADDRESS=broker
     ports:
       - "5000:5000"
@@ -122,7 +122,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: saludtech
+      POSTGRES_DB: ingestion
     ports:
       - "5432:5432"
     volumes:

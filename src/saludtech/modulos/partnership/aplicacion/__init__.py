@@ -1,7 +1,0 @@
-from pydispatch import dispatcher
-
-from .handlers import HandlerProcesoIngestionPartnerIntegracion
-
-from saludtech.modulos.partnership.dominio.eventos import ProcesoIngestionPartnerAgregado
-
-dispatcher.connect(HandlerProcesoIngestionPartnerIntegracion.handle_proceso_ingestion_partner_agregado, signal=f'{ProcesoIngestionPartnerAgregado.__name__}Integracion')
