@@ -15,7 +15,7 @@ def unix_time_millis(dt):
 class Despachador:
     def _publicar_mensaje(self, mensaje, topico,schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        print(mensaje)
+
         if topico == "comandos-proceso_ingestion":
             publicador = cliente.create_producer(topico, schema=AvroSchema(ComandoCrearProcesoIngestion))
         else:
@@ -26,10 +26,10 @@ class Despachador:
 
     def publicar_evento(self, evento, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del evento
-        print(evento.fecha_creacion)
+       
         payload = ProcesoIngestionCreadoPayload(
             id_proceso_ingestion=str(evento.id_proceso_ingestion), 
-            id_partner=str("1"), 
+            id_partner=str(evento.id_partner), 
             fecha_creacion=int(datetime.strptime(evento.fecha_creacion, '%Y-%m-%d').timestamp() * 1000)
         )
         print("evento_publicado")
@@ -51,6 +51,6 @@ class Despachador:
         )
        
         comando_integracion = ComandoCrearProcesoIngestion(data=payload)
-        print(comando_integracion)
+        
    
         self._publicar_mensaje(comando_integracion, topico,AvroSchema(ComandoCrearProcesoIngestion))

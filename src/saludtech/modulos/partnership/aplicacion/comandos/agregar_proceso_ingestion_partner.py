@@ -29,7 +29,7 @@ class AgregarProcesoIngestionPartnerHandler(AgregarProcesoIngestionPartnerBaseHa
             ,   id_proceso_ingestion=comando.id_proceso_ingestion)
         proceso_ingestion_partner: ProcesoIngestionPartner = self.fabrica_partnership.crear_objeto(proceso_ingestion_partner_dto, MapeadorProcesoIngestionPartner())
         proceso_ingestion_partner.agregar_proceso_ingestion_partner(proceso_ingestion_partner)
-
+        
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioProcesoIngestionPartner.__class__)
 
         UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, proceso_ingestion_partner)

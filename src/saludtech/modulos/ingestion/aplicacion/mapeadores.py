@@ -47,6 +47,7 @@ class MapeadorProcesoIngestion(RepMap):
 
     def dto_a_entidad(self, dto: ProcesoIngestionDTO) -> ProcesoIngestion:
         proceso_ingestion = ProcesoIngestion(dto.id, dto.fecha_creacion, dto.fecha_actualizacion)
+        proceso_ingestion.id_partner=dto.id_partner
         proceso_ingestion.imagenes = list()
 
         imagenes_dto: list[ImagenDTO] = dto.imagenes

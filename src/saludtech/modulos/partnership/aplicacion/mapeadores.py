@@ -32,6 +32,10 @@ class MapeadorProcesoIngestionPartner(RepMap):
         return proceso_ingestion_partner_dto
 
     def dto_a_entidad(self, dto: ProcesoIngestionPartnerDTO) -> ProcesoIngestionPartner:
-        proceso_ingestion_partner = ProcesoIngestionPartner(dto.id_partner,dto.id_proceso_ingestion, dto.fecha_creacion, dto.fecha_actualizacion)
- 
+        proceso_ingestion_partner= ProcesoIngestionPartner()
+        proceso_ingestion_partner.id_partner = dto.id_partner
+        proceso_ingestion_partner.id_proceso_ingestion = dto.id_proceso_ingestion
+        proceso_ingestion_partner.fecha_actualizacion = dto.fecha_actualizacion
+        proceso_ingestion_partner.fecha_creacion = dto.fecha_creacion
+        
         return proceso_ingestion_partner

@@ -19,7 +19,7 @@ class _FabricaProcesoIngestionPartner(Fabrica):
 class FabricaPartnership(Fabrica):
     def crear_objeto(self, obj: any, mapeador: Mapeador) -> any:
         if mapeador.obtener_tipo() == ProcesoIngestionPartner.__class__:
-            fabrica_proceso_ingestion_partner = _FabricaProcesoIngestionPartner()
-            return fabrica_proceso_ingestion_partner.crear_objeto(obj, mapeador)
+            fabrica_partnership = _FabricaProcesoIngestionPartner()
+            return fabrica_partnership.crear_objeto(obj, mapeador)
         else:
             raise TipoObjetoNoExisteEnDominioPartnershipExcepcion()

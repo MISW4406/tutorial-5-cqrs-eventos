@@ -5,12 +5,8 @@ from saludtech.modulos.partnership.infraestructura.schema.v1.eventos import Even
 from saludtech.modulos.partnership.infraestructura.schema.v1.comandos import ComandoAgregarProcesoIngestionPartner, ComandoAgregarProcesoIngestionPartnerPayload
 from saludtech.seedwork.infraestructura import utils
 
-import datetime
+from datetime import datetime
 
-epoch = datetime.datetime.utcfromtimestamp(0)
-
-def unix_time_millis(dt):
-    return (dt - epoch).total_seconds() * 1000.0
 
 class Despachador:
     def _publicar_mensaje(self, mensaje, topico,schema):
@@ -20,11 +16,11 @@ class Despachador:
         cliente.close()
 
     def publicar_evento(self, evento, topico):
-        
-        payload = EventoProcesoIngestionPartnerAgregadoPayload(
+       
+        payload = ProcesoIngestionPartnerAgregadoPayload(
             id_proceso_ingestion=str(evento.id_proceso_ingestion), 
             id_partner=str(evento.id_partner), 
-            fecha_creacion=int(unix_time_millis(evento.fecha_creacion))
+            fecha_creacion=int(datetime.strptime(evento.fecha_creacion, '%Y-%m-%d %H:%M:%S%z').timestamp() * 1000)
         )
         evento_integracion = EventoProcesoIngestionPartnerAgregado(data=payload)
         self._publicar_mensaje(evento_integracion, topico,AvroSchema(EventoProcesoIngestionPartnerAgregado))

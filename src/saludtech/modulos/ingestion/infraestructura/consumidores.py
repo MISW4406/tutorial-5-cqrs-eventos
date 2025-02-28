@@ -38,7 +38,6 @@ def suscribirse_a_comandos():
         while True:
             mensaje = consumidor.receive()
           
-            print(mensaje.value().data.id_partner)
             print(f'Comando recibido: {mensaje.value().data}')
             mc= mensaje.value().data
             comando= CrearProcesoIngestion(fecha_creacion=mc.fecha_creacion,fecha_actualizacion=mc.fecha_actualizacion,id=mc.id_proceso_ingestion,id_partner=mc.id_partner,imagenes=mc.imagenes)
