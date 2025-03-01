@@ -7,12 +7,10 @@ from flask_swagger import swagger
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
-    import saludtech.servicio_ingestion.modulos.partnership.aplicacion
-    import saludtech.servicio_ingestion.modulos.ingestion.aplicacion
+    import saludtech.servicio_anonimizacion.modulos.anonimizacion.aplicacion
 
 def importar_modelos_alchemy():
-    import saludtech.servicio_ingestion.modulos.partnership.infraestructura.dto 
-    import saludtech.servicio_ingestion.modulos.ingestion.infraestructura.dto
+    import saludtech.servicio_anonimizacion.modulos.anonimizacion.infraestructura.dto
 
 def comenzar_consumidor():
     """
@@ -22,34 +20,30 @@ def comenzar_consumidor():
     """
 
     import threading
-    import saludtech.servicio_ingestion.modulos.partnership.infraestructura.consumidores as partnership
-    import saludtech.servicio_ingestion.modulos.ingestion.infraestructura.consumidores as ingestion
+    import saludtech.servicio_anonimizacion.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
 
     # Suscripción a eventos
-    #threading.Thread(target=partnership.suscribirse_a_eventos).start()
-    #threading.Thread(target=ingestion.suscribirse_a_eventos).start()
+    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
 
     # Suscripción a comandos
-    #threading.Thread(target=partnership.suscribirse_a_comandos).start()
-    #threading.Thread(target=ingestion.suscribirse_a_comandos).start()
+    threading.Thread(target=anonimizacion.suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
     
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@db:5432/ingestion"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@db:5432/anonimizacion"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     app.secret_key = 'abc'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['TESTING'] = configuracion.get('TESTING')
     
-
-     # Inicializa la DB
-    from saludtech.servicio_ingestion.config.db import init_db
+    # Inicializa la DB
+    from saludtech.servicio_anonimizacion.config.db import init_db
     init_db(app)
     
-    from saludtech.servicio_ingestion.config.db import db
+    from saludtech.servicio_anonimizacion.config.db import db
     importar_modelos_alchemy()
     registrar_handlers()
 
@@ -58,13 +52,11 @@ def create_app(configuracion={}):
         if not app.config.get('TESTING'):
             comenzar_consumidor()
 
-     # Importa Blueprints
-    from . import partnership
-    from . import ingestion
+    # Importa Blueprints
+    from . import anonimizacion
 
     # Registro de Blueprints
-    app.register_blueprint(partnership.bp)
-    app.register_blueprint(ingestion.bp)
+    app.register_blueprint(anonimizacion.bp)
 
     @app.route("/spec")
     def spec():
