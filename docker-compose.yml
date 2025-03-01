@@ -109,7 +109,23 @@ services:
       - PULSAR_ADDRESS=broker
     ports:
       - "5000:5000"
- 
+  anonimizacion:
+    container_name: anonimizacion
+    hostname: anonimizacion
+    image: anonimizacion/flask 
+    profiles: ["saludtech"]
+    networks:
+      - api
+      - pulsar
+    labels:
+      SidecarDiscover: "false"
+     
+    environment:
+      - ANONIMIZACION_ADDRESS=anonimizacion
+      - PULSAR_ADDRESS=broker
+    ports:
+      - "5001:5000"
+      
   db:
     image: postgres:15
     profiles: ["pulsar"]
