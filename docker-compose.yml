@@ -145,7 +145,7 @@ services:
       - PULSAR_ADDRESS=broker
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:postgres@db:5432/anonimizacion
     ports:
-      - "5002:5002"  # Puerto según main.py
+      - "5001:5000"  # Puerto según main.py
     depends_on:
       - db
       - broker
