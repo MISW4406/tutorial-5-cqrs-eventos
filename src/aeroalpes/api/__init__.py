@@ -62,11 +62,9 @@ def create_app(configuracion={}):
     app.config['TESTING'] = configuracion.get('TESTING')
 
      # Inicializa la DB
-    from aeroalpes.config.db import init_db
+    from aeroalpes.config.db import init_db, db
+    
     init_db(app)
-
-    from aeroalpes.config.db import db
-
     importar_modelos_alchemy()
     registrar_handlers()
 
