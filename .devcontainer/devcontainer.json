@@ -10,8 +10,15 @@
     }
   },
   "postCreateCommand": "bash .devcontainer/setup.sh",
-  "initializeCommand": "mkdir -p data/bookkeeper && mkdir -p data/zookeeper && sudo chmod -R 777 ./data",
+  "initializeCommand": "mkdir -p data/bookkeeper data/zookeeper && sudo chmod -R 777 ./data",
   "runArgs": ["--init", "--privileged"],
   "forwardPorts": [2181, 8080, 6650],
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+  "customizations": {
+  "vscode": {
+    "extensions": [
+      "ritwickdey.liveserver"
+    ]
+  }
+}
 }
